@@ -19,14 +19,21 @@ People w bigger scalable interfaces are using micro-services and containerisatio
 ---
 
 ### Hardware
+
 RAM
 CPU
 Motherboard
+
 ### Software
+
 ![image](https://user-images.githubusercontent.com/88186581/134934358-a9ff81f0-4164-4c95-88b5-96ee6218517f.png)
+
 need to scale up hardware to support software
+
 ### Virualisation
-![image](https://user-images.githubusercontent.com/88186581/134934491-dcab706b-3b36-4bd1-943d-578e8d7084e7.png)
+
+![image](https://user-images.githubusercontent.com/88186581/134934491-dcab706b-3b36-4bd1-943d-578e8d7084e7.png)4
+
 servers have evolved
 scale out and in
 virtaulisation w 3 VM in vagrant slows down laptop speed and takes 50% of resources
