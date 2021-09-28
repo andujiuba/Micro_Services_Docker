@@ -188,7 +188,6 @@ And search in the browser: `localhost:4000`
 
 ## Running Node App Using Docker
 
-
 ```
 cd /usr/share/nginx/html
 ```
