@@ -64,3 +64,24 @@ docker
 docker version
 ```
 
+## Commands
+
+`docker pull "image_name"`
+`docker run "image_name"`
+`docker push "image_name"`
+
+Naming convention for images
+`"acount_name"/"image_name": tag`
+
+Remove image
+`docker rmi ""image_name`
+
+Creating containers
+`docker run -d -p "container_id":"container_id" "name"`
+docker run -d -p 2368:2368
+Show container
+`docker ps`
+`docker ps -a`
+
+go to `localhost:"container_id"`
+localhost:2368
