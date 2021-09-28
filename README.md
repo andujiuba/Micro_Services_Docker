@@ -130,7 +130,7 @@ Go to `localhost:"container_id"` in web browser
 `docker stop "container_id"`
 `-stop`, `-start`, `-rm`
 
-*STOP* - still holds same data available
+*STOP* - still holds same data available <br>
 *REMOVE* - deletes it completely
 
 ### Interacting with a running container
@@ -139,10 +139,39 @@ Go to `localhost:"container_id"` in web browser
 alias docker="winpty docker"
 docker exec -it "container_id" sh
 ```
+
 Now you are inside the container where all the code is located
+
 ```docker
-#apt-get nano install
+# apt-get update
+# apt-get nano install
 ```
+To leave the container, just enter
+
+```docker
+exit
+```
+
+## Documentation
+
+To access documentation for Docker, then run in the terminal:
+```
+docker run -d -p 4000:4000 docs/docker.github.io
+```
+
+And search in the browser: `localhost:4000`
+
+![image](https://user-images.githubusercontent.com/88186581/135111967-9f95b034-40b2-4571-8dba-5bf3f769767d.png)
+
+
+## Running Node App Using Docker
+
+
+```
+cd /usr/share/nginx/html
+```
+
+docker run -d -p 3000:3000 ahskhan/sparta-app-dockerised:v1
 
 
 
