@@ -85,3 +85,9 @@ Show container
 
 go to `localhost:"container_id"`
 localhost:2368
+
+`docker stop "container_id"`
+`-stop`, `-start`, `-remove`
+
+STOP - still holds same data available
+REMOVE - deletes it completely
