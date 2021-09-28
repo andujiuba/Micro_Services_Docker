@@ -152,6 +152,12 @@ To leave the container, just enter
 exit
 ```
 
+### Delete all containers
+
+```
+docker rm -f $(docker ps -a -q)
+```
+
 ## Documentation
 
 To access documentation for Docker, then run in the terminal:
