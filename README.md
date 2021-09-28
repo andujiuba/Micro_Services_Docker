@@ -63,31 +63,87 @@ https://docs.docker.com/desktop/windows/install/
 docker
 docker version
 ```
+If everything is correctly installed, then this should be what you see:
+
+![image](https://user-images.githubusercontent.com/88186581/135101175-93bbd1c0-754f-4067-acd6-09b12db35cfd.png)
 
 ## Commands
 
 `docker pull "image_name"`
+
 `docker run "image_name"`
+
 `docker push "image_name"`
 
-Naming convention for images
+### Naming convention for images
+
 `"acount_name"/"image_name": tag`
 
-Remove image
-`docker rmi ""image_name`
+### See all running images
 
-Creating containers
+`docker images`
+
+![image](https://user-images.githubusercontent.com/88186581/135104643-84955f26-5085-49ea-9146-3b3bd00008ee.png)
+
+### Remove image
+`docker rmi -f "image_name"`
+
+### Creating containers
 `docker run -d -p "container_id":"container_id" "name"`
-docker run -d -p 2368:2368
-Show container
+This is sort "unzipping" of the container - all the contents will be released and downloaded to your machine.
+
+We will practice using the `Ghost` container:
+
+```
+docker run -d -p 2368:2368 ghost
+```
+
+### Show container
+
 `docker ps`
 `docker ps -a`
 
-go to `localhost:"container_id"`
-localhost:2368
+<br>
+<details>
+<summary>For `Ghost`, this is the resulting output:</summary>
+<br>
+ 
+```
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+a807d8be43d9   ghost     "docker-entrypoint.s…"   19 seconds ago   Up 14 seconds   0.0.0.0:2368->2368/tcp, :::2368->2368/tcp   wonderful_visvesvaraya
+```
+</details>
+
+### View image
+
+Go to `localhost:"container_id"` in web browser
+
+<details>
+<summary>In our case, we will search for `localhost:2368`</summary>
+<br>
+ 
+![image](https://user-images.githubusercontent.com/88186581/135109378-cc9b49a4-f6f8-4596-a1dc-d966ed26d79b.png)
+</details>
+
+### Change state of the container
 
 `docker stop "container_id"`
-`-stop`, `-start`, `-remove`
+`-stop`, `-start`, `-rm`
 
-STOP - still holds same data available
-REMOVE - deletes it completely
+*STOP* - still holds same data available
+*REMOVE* - deletes it completely
+
+### Interacting with a running container
+
+```
+alias docker="winpty docker"
+docker exec -it "container_id" sh
+```
+Now you are inside the container where all the code is located
+```docker
+#apt-get nano install
+```
+
+
+
+
