@@ -106,7 +106,8 @@ If everything is correctly installed, then this should be what you see:
 ```
 docker run -d -p "container_id":"container_id" "name"
 ```
-This is sort "unzipping" of the container - all the contents will be released and downloaded to your machine.
+This is sort "unzipping" of the container - all the contents will be released and downloaded to your machine. <br>
+The `ID:ID` section is the **port mapping**, showing the path from the first port to the second port.
 
 We will practice using the `Ghost` container:
 
@@ -143,7 +144,9 @@ Go to `localhost:"container_id"` in web browser
 
 ### Change state of the container
 
-`docker stop "container_id"`
+```
+docker stop "container_id"
+```
 `-stop`, `-start`, `-rm`
 
 *STOP* - still holds same data available <br>
@@ -188,12 +191,19 @@ And search in the browser: `localhost:4000`
 
 ## Running Node App Using Docker
 
+We need to download the `nginx` image using `docker run`. We then `ssh` into the machine using `docker exec`. We find the `index.html` file that represents the main page of the app. You can change the index.html file to change the appearance of the page.
 ```
+docker run -d -p 80:80 nginx
+docker exec -it "container_id" sh
 cd /usr/share/nginx/html
 ```
+If there are errors running the second line of code, then the *alias* hasn't been set. Run `alias docker="winpty docker"`.
 
+If `docker stop "container_id"` is run then started again, the last version of the image will still be there. However, if the container is removed and rerun, then the image resets itself to its original state.
+
+```
 docker run -d -p 3000:3000 ahskhan/sparta-app-dockerised:v1
-
+```
 
 
 
