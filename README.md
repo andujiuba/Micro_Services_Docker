@@ -328,3 +328,7 @@ docker push "image_name":"tag"
 ![image](https://user-images.githubusercontent.com/88186581/135225057-2d4f015b-393c-4930-90d5-164a6e458aed.png)
 
 ![image](https://user-images.githubusercontent.com/88186581/135225245-bb696ae3-fdfd-4632-a6cb-8cf7d56fbfea.png)
+
+## Creating a MicroService
+
+### 1. Make a new Dockerfile for the app
