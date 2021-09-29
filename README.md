@@ -7,7 +7,7 @@
 
 ![image](https://user-images.githubusercontent.com/88186581/134932707-feeb9f85-0f48-41e3-bad9-ad4033391085.png)
 
-Each microservice works independant to each other
+> Each microservice works independant to each other
 
 ![image](https://user-images.githubusercontent.com/88186581/134933334-fd80d3dd-0795-41fa-8ddb-0800565fc7b4.png)
 ![image](https://user-images.githubusercontent.com/88186581/134933388-ba3c4971-e4df-4044-8e84-4d15a7ee1b1d.png)
@@ -72,7 +72,7 @@ layers in OS:
 
 ## Installation
 
-https://docs.docker.com/desktop/windows/install/
+> https://docs.docker.com/desktop/windows/install/
 
 ```bash
 docker
@@ -84,11 +84,11 @@ If everything is correctly installed, then this should be what you see:
 
 ## Commands
 
-`docker pull "image_name"`
-
-`docker run "image_name"`
-
-`docker push "image_name"`
+```
+docker pull "image_name"
+docker run "image_name"
+docker push "image_name"
+```
 
 ### Naming convention for images
 
@@ -105,13 +105,15 @@ If everything is correctly installed, then this should be what you see:
 docker rmi -f "image_name"
 ```
 
-### Creating containers
+### Creating and running containers
+
+![image](https://user-images.githubusercontent.com/88186581/135260682-8ad909ab-d85d-4a87-941c-918730697959.png)
 
 ```
 docker run -d -p "port":"port" "name"
 ```
-This is sort "unzipping" of the container - all the contents will be released and downloaded to your machine. <br>
-The `port:port` section is the **port mapping**, showing the path from the first port to the second port.
+This is a sort of "unzipping" of the container - all the contents will be released and downloaded to your machine. <br>
+The `port:port` section is  **port mapping**, showing the path from the first port to the second port.
 
 We will practice using the `Ghost` container:
 
@@ -144,6 +146,8 @@ Go to `localhost:"container_id"` in web browser
 <details>
 <summary>In our case, we will search for `localhost:2368`</summary>
 <br>
+ 
+ As you can see, we can now access the static page.
  
 ![image](https://user-images.githubusercontent.com/88186581/135109378-cc9b49a4-f6f8-4596-a1dc-d966ed26d79b.png)
 </details>
@@ -186,7 +190,7 @@ Now you are inside the container where all the code is located
 To leave the container, just enter
 
 ```docker
-exit
+# exit
 ```
 
 ### Delete all containers
@@ -214,10 +218,10 @@ We need to download the `nginx` image using `docker run`. We know NGINX runs on 
 CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                               NAMES
 08f7a31ada06   nginx                   "/docker-entrypoint.…"   50 seconds ago   Up 29 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp                   kind_keller
 ```
-We then `ssh` into the machine using `docker exec`. We find the `index.html` file that represents the main page of the app. You can change the index.html file to change the appearance of the page.
+We then `ssh` into the machine using `docker exec`. We find the `index.html` file that controls the main page of the app. You can change the index.html file to change the appearance of the page.
 <br>
 <details>
-<summary>Here is the complete code:</summary>
+<summary>Here is the code:</summary>
 <br>
  
  ```
@@ -286,31 +290,30 @@ Go to `localhost` and you should see the page:
 
 ### 1. Create a `Dockerfile`
 
+```bash
+# BUILDING OUR OWN IMAGE
+# Choose the image you want to build from
 
- ```bash
- # BUILDING OUR OWN IMAGE
- # Choose the image you want to build from
+FROM nginx
 
- FROM nginx
+LABEL MAINTAINER=andujiuba@spartaglobal.com
+# OPTIONAL -- tells who the author is
 
- LABEL MAINTAINER=andujiuba@spartaglobal.com
- # OPTIONAL -- tells who the author is
+# Make changes to index.html -- copy from host machine to container
 
- # Make changes to index.html -- copy from host machine to container
+COPY index.html /usr/share/nginx/html/index.html
 
- COPY index.html /usr/share/nginx/html/index.html
+# Portmap the container -- port 80
 
- # Portmap the container -- port 80
+EXPOSE 80
 
- EXPOSE 80
+# CMB to launch the NGINX web server
 
- # CMB to launch the NGINX web server
+CMD ["nginx", "-g", "daemon off;" ]
+# makes NGINX global
+```
 
- CMD ["nginx", "-g", "daemon off;" ]
- # makes NGINX global
- ```
- 
- CMD is always the **last command**
+CMD is always the **last command**
 
 ### 2. Build the image
 
@@ -381,7 +384,9 @@ docker volume rm $(docker volume ls -q)
 
 ## Multi-Stage Build 
 
-Sometimes, there is a need to minimise the size of the container before release. Because of this, we need a need to compress the image. We can do this within the `Dockerfile` 
+![image](https://user-images.githubusercontent.com/88186581/135259191-035b2622-b5e0-4613-8bce-63951785bc07.png)
+
+Heavy containers take too long to initialse and cannot be taken to production, so, sometimes we need to minimise the size of the container before release. Because of this, we need to compress the image. We can do this within the `Dockerfile` 
 
 In the `Dockerfile` located in the `app` directory, edit the code to create this compressed image
 <br>
