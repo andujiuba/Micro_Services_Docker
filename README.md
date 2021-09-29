@@ -107,7 +107,7 @@ docker rmi -f "image_name"
 
 ### Creating and running containers
 
-![image](https://user-images.githubusercontent.com/88186581/135260682-8ad909ab-d85d-4a87-941c-918730697959.png)
+![image](https://user-images.githubusercontent.com/88186581/135261410-90fff1f5-7b18-4968-a48a-b957fa9d65c5.png)
 
 ```
 docker run -d -p "port":"port" "name"
