@@ -42,6 +42,8 @@ virtaulisation w 3 VM in vagrant slows down laptop speed and takes 50% of resour
 
 # Docker
 
+![image](https://user-images.githubusercontent.com/88186581/135287639-deb752d2-c609-419e-82a4-c48e725e1e4a.png)
+
 ## In the map of automation (LINK), Docker container will host the static website. EC2 will push the public IP. Jenkins pushes manual changes to DockerHub then pulls from DockerHub to the EC2 instance.
 
 - shares resources, makes it lightweight
@@ -112,7 +114,7 @@ docker rmi -f "image_name"
 ```
 docker run -d -p "port":"port" "name"
 ```
-This is a sort of "unzipping" of the container - all the contents will be released and downloaded to your machine. <br>
+This is a sort of "unzipping" of the container - all the contents will be extracted and downloaded to your machine. <br>
 The `port:port` section is  **port mapping**, showing the path from the first port to the second port.
 
 We will practice using the `Ghost` container:
@@ -346,8 +348,48 @@ docker push "image_name":"tag"
 
 ## Creating a MicroService
 
+Add the `app` directory to your system.
+
 ### 1. Make a new Dockerfile for the app
 
+In the `app` folder, create a new `Dockerfile`.
+<br>
+<details>
+<summary>Final Code:</summary>
+<br>
+
+```docker
+FROM node
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install -g npm@latest
+
+RUN npm install express
+
+# RUN seeds/seed.js
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+```</details>
+
+<br>
+
+### 2. Build and run the container
+
+```bash
+docker build -t akunduj/sre_node_app:v1 .
+docker run -d -p 80:3000 akunduj/sre_node_app:v1
+```
+
+### 3. View the app page on the browser
+
+`localhost:3000`
 
 ---
 
@@ -433,4 +475,100 @@ CMD ["node", "app.js"]
 </details>
 
 
+## Setting Up /posts (MongoDB)
+
+The goal is to have two images/containers communicating with each other. 
+
+### 1. Create image of MongoDB / use offical Mongo image
+
+```bash
+docker pull mongo
+docker run -d -p 27017:27017 mongo
+```
+
+### 2. Create a new directory and `Dockerfile`
+Create a `Dockerfile` and put it in a new `db` directory, located in the same place as the `app`.
+<br>
+<details>
+<summary>Dockerfile:</summary>
+<br>
+ 
+```
+FROM mongo
+
+WORKDIR /usr/src/db/
+
+COPY ./mongo.conf /etc/
+
+EXPOSE 27017
+```
+</details>
+
+In the same `db` folder, add the `mongo.conf` file we created in the [cloud_computing_intro](https://github.com/andujiuba/cloud_computing_intro/blob/main/Vagrantfile/db_setup/conf/mongod.conf) repository.
+
+> If you are using the mongodb offical image, then you may need to change the conf file slightly
+
+### 3. Connect both images using YAML
+
+We are going to make a volume to store the volume. We will do this using a YAML file file called `docker-compose.yml`
+<br>
+<details>
+<summary>We need to :</summary>
+<br>
+ 
+```
+version: '3.1'
+
+services:
+  db:
+    image: mongo
+    container_name: mongo
+    # restart: always
+    volumes:
+      - .mongod.conf:/etc/mongod.conf
+      # - ./logs:/var/log/mongod/
+      # - ./db:/var/lib/mongod
+      # - ./mongod.service:/lib/systemd/dydtem/mongod.service
+    ports:
+      - "27017:27017"
+
+  app:
+    image: akunduj/sre_node_app
+    container_name: app
+    # restart: always
+    ports:
+      - "80:3000"
+    links:
+      - db
+    enviornment:
+      - DB_HOST=mongodb://mongo:27017/posts
+
+```
+</details>
+
+<details>
+<summary>Short overview on Docker Compose</summary>
+<br>
+
+ Compose is used for the maintainence and operation of multi-container Docker applications. Using YAML, all the services in the application are coordinated and executed simultaneously. Compose can be used not just for publishing but also for production, staging, development, testing, as well as CI workflows. 
+
+> If you want more information on Docker Compose, visit [here](https://docs.docker.com/compose/)
+
+</details>
+
+### 4. Change directories
+
+Uncomment the `RUN seeds/seed.js` code in the app `Dockerfile`.
+
+Run from folder:
+```
+docker-compose up -d
+```
+
+To delete containers created:
+```
+docker-compose down
+```
+
+### 5. Go into the container and run seeds
 
