@@ -251,9 +251,82 @@ Go to `localhost` and you should see the page:
 - Create a container with NGINX image --> globally available
 - Create an index.html file on localhost
 - Copy the index.html file to default location inside of NGINX container /usr/share/nginx/html
-- Commit the changes to the mages
+- Commit the changes to the images
 - Build you own images called "account_id"/sre_customised_nginx
 - docker run -d -p "your_image_name"
 
+<br>
+<details>
+<summary>*SudoCode*</summary>
+<br>
+ 
+```bash
+# Choose the image you want to build from 
 
+# Create a container
 
+# Make changes to index.html -- copy from host machine to container  
+
+# Portmap the container -- port 80
+
+# CMB to launch the NGINX web server
+```
+</details>
+
+<br>
+<details>
+<summary>### 1. Create a `Dockerfile`</summary>
+<br>
+
+ ```bash
+ # BUILDING OUR OWN IMAGE
+ # Choose the image you want to build from
+
+ FROM nginx
+
+ LABEL MAINTAINER=andujiuba@spartaglobal.com
+ # OPTIONAL -- tells who the author is
+
+ # Make changes to index.html -- copy from host machine to container
+
+ COPY index.html /usr/share/nginx/html/index.html
+
+ # Portmap the container -- port 80
+
+ EXPOSE 80
+
+ # CMB to launch the NGINX web server
+
+ CMD ["nginx", "-g", "daemon off;" ]
+ # makes NGINX global
+ ```
+ 
+ CMD is always the **last command**
+</details>
+
+### 2. Build the image
+
+```
+docker build -t akunduj/sre_customised_nginx:v1 .
+```
+![image](https://user-images.githubusercontent.com/88186581/135223134-ae5c366a-4675-4382-88dc-42fffc0a165a.png)
+
+Image should be there when `docker images` is run
+
+### 3. Run the container
+
+```
+docker run -d -p 80:80 akunduj/sre_customised_nginx:v1
+```
+![image](https://user-images.githubusercontent.com/88186581/135223399-7857e1ac-be1c-4779-bcac-ca4f4d4b6e70.png)
+
+### 4. Push to DockerHub
+
+```
+docker login
+docker push "image_name":"tag"
+```
+
+![image](https://user-images.githubusercontent.com/88186581/135225057-2d4f015b-393c-4930-90d5-164a6e458aed.png)
+
+![image](https://user-images.githubusercontent.com/88186581/135225245-bb696ae3-fdfd-4632-a6cb-8cf7d56fbfea.png)
