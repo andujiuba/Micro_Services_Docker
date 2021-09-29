@@ -257,7 +257,7 @@ Go to `localhost` and you should see the page:
 
 <br>
 <details>
-<summary>*SudoCode*</summary>
+<summary> *SudoCode* </summary>
 <br>
  
 ```bash
@@ -275,7 +275,7 @@ Go to `localhost` and you should see the page:
 
 <br>
 <details>
-<summary>### 1. Create a `Dockerfile`</summary>
+<summary> ### 1. Create a `Dockerfile` </summary>
 <br>
 
  ```bash
