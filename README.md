@@ -40,7 +40,9 @@ virtaulisation w 3 VM in vagrant slows down laptop speed and takes 50% of resour
 
 ---
 
-## Docker
+# Docker
+
+## In the map of automation (LINK), Docker container will host the static website. EC2 will push the public IP. Jenkins pushes manual changes to DockerHub then pulls from DockerHub to the EC2 instance.
 
 - shares resources, makes it lightweight
 - has its own network
@@ -205,7 +207,7 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 We then `ssh` into the machine using `docker exec`. We find the `index.html` file that represents the main page of the app. You can change the index.html file to change the appearance of the page.
 <br>
 <details>
-<summary>Here is the breakdown of code:</summary>
+<summary>Here is the complete code:</summary>
 <br>
  
  ```
@@ -246,7 +248,7 @@ Go to `localhost` and you should see the page:
 ---
 
 **TASKS:**
-- Create a container with NGINX image
+- Create a container with NGINX image --> globally available
 - Create an index.html file on localhost
 - Copy the index.html file to default location inside of NGINX container /usr/share/nginx/html
 - Commit the changes to the mages
