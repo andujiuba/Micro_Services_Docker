@@ -511,10 +511,6 @@ In the same `db` folder, add the `mongo.conf` file we created in the [cloud_comp
 ### 3. Connect both images using YAML
 
 We are going to make a volume to store the volume. We will do this using a YAML file file called `docker-compose.yml`
-<br>
-<details>
-<summary>We need to :</summary>
-<br>
  
 ```
 version: '3.1'
@@ -544,7 +540,6 @@ services:
       - DB_HOST=mongodb://mongo:27017/posts
 
 ```
-</details>
 
 <details>
 <summary>Short overview on Docker Compose</summary>
