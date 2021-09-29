@@ -101,7 +101,9 @@ If everything is correctly installed, then this should be what you see:
 ![image](https://user-images.githubusercontent.com/88186581/135104643-84955f26-5085-49ea-9146-3b3bd00008ee.png)
 
 ### Remove image
-`docker rmi -f "image_name"`
+```
+docker rmi -f "image_name"
+```
 
 ### Creating containers
 
@@ -119,8 +121,10 @@ docker run -d -p 2368:2368 ghost
 
 ### Show container
 
-`docker ps`
-`docker ps -a`
+```
+docker ps
+docker ps -a
+```
 
 <br>
 <details>
@@ -143,6 +147,12 @@ Go to `localhost:"container_id"` in web browser
  
 ![image](https://user-images.githubusercontent.com/88186581/135109378-cc9b49a4-f6f8-4596-a1dc-d966ed26d79b.png)
 </details>
+
+### Checking history of image
+
+```
+docker history "image_name"
+```
 
 ### Checking state of the container
 
@@ -307,9 +317,11 @@ Go to `localhost` and you should see the page:
 ```
 docker build -t akunduj/sre_customised_nginx:v1 .
 ```
+The `.` is there to indicate the location of the `Dockerfile` that the image is built from.
+
 ![image](https://user-images.githubusercontent.com/88186581/135223134-ae5c366a-4675-4382-88dc-42fffc0a165a.png)
 
-Image should be there when `docker images` is run
+The image should be there when `docker images` is run.
 
 ### 3. Run the container
 
@@ -332,3 +344,88 @@ docker push "image_name":"tag"
 ## Creating a MicroService
 
 ### 1. Make a new Dockerfile for the app
+
+
+---
+
+## Data Management in Docker
+![image](https://user-images.githubusercontent.com/88186581/135250647-5c27535d-98bb-4016-b34e-334fc8418718.png)
+
+### What is a Volume?
+
+
+## Commands
+
+### Create a Volume
+```
+docker volume create "volume_name"
+```
+
+### Check the existing volumes in the machine
+```
+docker volume ls
+```
+![image](https://user-images.githubusercontent.com/88186581/135251011-24a34cbc-9866-4ec8-aeaa-277c28ea6b26.png)
+
+### Inspect a Volume
+```
+docker inspect "volume_name"
+```
+![image](https://user-images.githubusercontent.com/88186581/135251244-7bbec227-50c5-455b-89db-364538c0b7cb.png)
+
+### Delete Volume(s)
+```
+docker volume rm "volume_name"
+docker volume rm $(docker volume ls -q)
+```
+
+## Multi-Stage Build 
+
+Sometimes, there is a need to minimise the size of the container before release. Because of this, we need a need to compress the image. We can do this within the `Dockerfile` 
+
+In the `Dockerfile` located in the `app` directory, edit the code to create this compressed image
+<br>
+<details>
+<summary>New code:</summary>
+<br>
+ 
+```docker
+FROM node AS app
+# for small size image
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install -g npm@latest
+RUN npm install express
+# RUN seeds/seed.js
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+
+##################################################################
+# Lets build a multi-stage production image
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install -g npm@latest
+RUN npm install express
+
+# This line of code does the magic to compress the image
+COPY --from=app /usr/src/app /usr/src/app
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+```
+</details>
+
+
+
