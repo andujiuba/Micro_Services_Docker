@@ -376,9 +376,9 @@ COPY . .
 EXPOSE 3000
 
 CMD ["node", "app.js"]
-```</details>
+```
+</details>
 
-<br>
 
 ### 2. Build and run the container
 
