@@ -142,6 +142,12 @@ Go to `localhost:"container_id"` in web browser
 ![image](https://user-images.githubusercontent.com/88186581/135109378-cc9b49a4-f6f8-4596-a1dc-d966ed26d79b.png)
 </details>
 
+### Checking state of the container
+
+```
+docker logs "container_id"
+```
+
 ### Change state of the container
 
 ```
@@ -189,21 +195,63 @@ And search in the browser: `localhost:4000`
 ![image](https://user-images.githubusercontent.com/88186581/135111967-9f95b034-40b2-4571-8dba-5bf3f769767d.png)
 
 
-## Running Node App Using Docker
+## Running NGINX
 
-We need to download the `nginx` image using `docker run`. We then `ssh` into the machine using `docker exec`. We find the `index.html` file that represents the main page of the app. You can change the index.html file to change the appearance of the page.
+We need to download the `nginx` image using `docker run`. We know NGINX runs on **port 80** so we use the port mapping code `80:80`. This should be what you see if you `docker ps`
 ```
-docker run -d -p 80:80 nginx
-docker exec -it "container_id" sh
-cd /usr/share/nginx/html
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                                               NAMES
+08f7a31ada06   nginx                   "/docker-entrypoint.…"   50 seconds ago   Up 29 seconds   0.0.0.0:80->80/tcp, :::80->80/tcp                   kind_keller
 ```
-If there are errors running the second line of code, then the *alias* hasn't been set. Run `alias docker="winpty docker"`.
+We then `ssh` into the machine using `docker exec`. We find the `index.html` file that represents the main page of the app. You can change the index.html file to change the appearance of the page.
+<br>
+<details>
+<summary>Here is the breakdown of code:</summary>
+<br>
+ 
+ ```
+ docker run -d -p 80:80 nginx
+ docker exec -it "container_id" sh
+ ```
+ If there are errors running the second line of code, then the *alias* hasn't been set. Run `alias docker="winpty docker"`.
+ Once inside the container:
+ ```docker
+ # apt-get update
+ # apt-get nano install
+ # cd /usr/share/nginx/html
+ # nano index.html
+ ```
+</details>
 
-If `docker stop "container_id"` is run then started again, the last version of the image will still be there. However, if the container is removed and rerun, then the image resets itself to its original state.
+If `docker stop "container_id"` is run then the container is started again, the last version of the image will still be there. However, if the container is removed and rerun, then the image resets itself to its original state.
 
+### Running a containerised version of the node app
+
+If port 80 is already allocated, you have to remove the container that is occupying it.
+```
+docker run -d -p 80:3000 ahskhan/sparta-app-dockerised:v1
+docker logs "container_id"
+```
+If you don't want to change port 80, then code instead:
 ```
 docker run -d -p 3000:3000 ahskhan/sparta-app-dockerised:v1
 ```
+If the container was set up successfully, you should see (when you run `docker logs`)
+
+![image](https://user-images.githubusercontent.com/88186581/135217787-df335a62-560a-4aa8-9570-c7f987c83a4a.png)
+
+Go to `localhost` and you should see the page:
+
+![image](https://user-images.githubusercontent.com/88186581/135218713-9e4e080a-99f1-4476-941f-948579bfd6f9.png)
+
+---
+
+**TASKS:**
+- Create a container with NGINX image
+- Create an index.html file on localhost
+- Copy the index.html file to default location inside of NGINX container /usr/share/nginx/html
+- Commit the changes to the mages
+- Build you own images called "account_id"/sre_customised_nginx
+- docker run -d -p "your_image_name"
 
 
 
