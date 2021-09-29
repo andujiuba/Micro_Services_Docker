@@ -106,10 +106,10 @@ If everything is correctly installed, then this should be what you see:
 ### Creating containers
 
 ```
-docker run -d -p "container_id":"container_id" "name"
+docker run -d -p "port":"port" "name"
 ```
 This is sort "unzipping" of the container - all the contents will be released and downloaded to your machine. <br>
-The `ID:ID` section is the **port mapping**, showing the path from the first port to the second port.
+The `port:port` section is the **port mapping**, showing the path from the first port to the second port.
 
 We will practice using the `Ghost` container:
 
