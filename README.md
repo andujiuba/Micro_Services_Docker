@@ -257,7 +257,7 @@ Go to `localhost` and you should see the page:
 
 <br>
 <details>
-<summary> *SudoCode* </summary>
+<summary> SudoCode </summary>
 <br>
  
 ```bash
@@ -272,11 +272,10 @@ Go to `localhost` and you should see the page:
 # CMB to launch the NGINX web server
 ```
 </details>
+<br>
 
-<br>
-<details>
-<summary> ### 1. Create a `Dockerfile` </summary>
-<br>
+### 1. Create a `Dockerfile`
+
 
  ```bash
  # BUILDING OUR OWN IMAGE
@@ -302,7 +301,6 @@ Go to `localhost` and you should see the page:
  ```
  
  CMD is always the **last command**
-</details>
 
 ### 2. Build the image
 
