@@ -569,6 +569,5 @@ To delete containers created:
 ```
 docker-compose down
 ```
-
 ### 5. Go into the container and run seeds
 
