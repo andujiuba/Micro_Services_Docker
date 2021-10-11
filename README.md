@@ -4,6 +4,7 @@
 - Isolated --> more secure and uses up less resources
 - Lightweight and user friendly
 - Scalable
+- Only meant to do one job
 
 ![image](https://user-images.githubusercontent.com/88186581/134932707-feeb9f85-0f48-41e3-bad9-ad4033391085.png)
 
